@@ -231,6 +231,16 @@ void mqttReconnect() {
     if (mqttClient.connect(MQTT_CLIENT_ID, MQTT_USER, MQTT_PASSWORD, MQTT_TOPIC_STATUS, 1, true, "disconnected", false)) {
       Serial.println("connected");
       mqttClient.publish(MQTT_TOPIC_STATUS, "connected", true);
+      // Re-subscribe to control topics after reconnecting
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_ENABLED);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_DIRECTION);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_STEPFOR);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_BLINDS);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_MODE_OPEN);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_MODE_CLOSE);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_DELAY_OPEN);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_DELAY_CLOSE);
+      mqttClient.subscribe(MQTT_TOPIC_CONTROL_STEPS_VERTICAL);
     } else {
       Serial.print("failed, rc=");
       Serial.print(mqttClient.state());
